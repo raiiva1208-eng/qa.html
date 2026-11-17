@@ -1,0 +1,476 @@
+<meta name='viewport' content='width=device-width, initial-scale=1'/>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A Little Birthday Q&A 💗</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Dancing+Script:wght@600;700&display=swap" rel="stylesheet">
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #fff0f5, #fce4ec, #f8bbd0);
+    font-family: 'Quicksand', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    overflow-x: hidden;
+    color: #713b52;
+}
+
+.heart {
+    position: fixed;
+    bottom: -30px;
+    pointer-events: none;
+    animation: floatUp linear forwards;
+    opacity: 0.65;
+    z-index: 0;
+}
+
+@keyframes floatUp {
+    to {
+        transform: translateY(-110vh) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+.container {
+    width: 100%;
+    max-width: 480px;
+    background: rgba(255,255,255,0.83);
+    border: 1px solid rgba(255,255,255,0.9);
+    border-radius: 28px;
+    padding: 35px 25px;
+    text-align: center;
+    box-shadow: 0 15px 45px rgba(190,80,120,0.18);
+    position: relative;
+    z-index: 2;
+    backdrop-filter: blur(12px);
+    animation: appear 0.8s ease;
+}
+
+@keyframes appear {
+    from {
+        opacity: 0;
+        transform: translateY(25px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.moon {
+    font-size: 42px;
+    margin-bottom: 12px;
+}
+
+h1 {
+    font-family: 'Dancing Script', cursive;
+    color: #d65a91;
+    font-size: 38px;
+    margin-bottom: 8px;
+}
+
+.subtitle {
+    font-size: 13px;
+    color: #a66b83;
+    margin-bottom: 25px;
+}
+
+.progress {
+    width: 100%;
+    height: 7px;
+    background: #f8dce8;
+    border-radius: 20px;
+    margin-bottom: 25px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    width: 0%;
+    height: 100%;
+    background: linear-gradient(90deg, #f48fb1, #d65a91);
+    border-radius: 20px;
+    transition: width 0.5s ease;
+}
+
+.question-number {
+    color: #d65a91;
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 2px;
+    margin-bottom: 15px;
+}
+
+.question {
+    font-size: 21px;
+    line-height: 1.5;
+    font-weight: 700;
+    margin-bottom: 25px;
+    min-height: 75px;
+}
+
+.options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.option {
+    width: 100%;
+    padding: 15px;
+    border-radius: 15px;
+    border: 1.5px solid #f2b7ce;
+    background: #fff7fa;
+    color: #a94e77;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.25s ease;
+}
+
+.option:hover {
+    background: #fce4ec;
+    transform: translateY(-2px);
+}
+
+.option.selected {
+    background: #e879a6;
+    border-color: #e879a6;
+    color: white;
+    transform: scale(1.02);
+}
+
+.option:disabled {
+    cursor: default;
+}
+
+.feedback {
+    margin-top: 20px;
+    font-size: 14px;
+    line-height: 1.6;
+    color: #c05283;
+    min-height: 25px;
+    font-weight: 600;
+}
+
+.next-btn, .final-link {
+    display: none;
+    width: 100%;
+    margin-top: 20px;
+    padding: 15px;
+    border: none;
+    border-radius: 15px;
+    background: linear-gradient(135deg, #ec8bb2, #d65a91);
+    color: white;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+    transition: 0.25s;
+}
+
+.next-btn:hover, .final-link:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(214,90,145,0.25);
+}
+
+.final-screen {
+    display: none;
+}
+
+.final-screen h2 {
+    font-family: 'Dancing Script', cursive;
+    font-size: 38px;
+    color: #d65a91;
+    margin: 15px 0;
+}
+
+.final-screen p {
+    line-height: 1.8;
+    font-size: 15px;
+    margin: 15px 0;
+}
+
+.gift {
+    font-size: 65px;
+    margin: 15px;
+    animation: bounce 1.5s infinite;
+}
+
+@keyframes bounce {
+    50% { transform: translateY(-10px); }
+}
+
+.footer {
+    margin-top: 25px;
+    font-size: 11px;
+    color: #c38ba2;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div id="quiz">
+
+        <div class="moon">🌙</div>
+
+        <h1>A Little Q&A</h1>
+
+        <p class="subtitle">
+            Just a few questions for someone special 💗
+        </p>
+
+        <div class="progress">
+            <div class="progress-fill" id="progress"></div>
+        </div>
+
+        <div class="question-number" id="number">
+            QUESTION 01 / 05
+        </div>
+
+        <div class="question" id="question"></div>
+
+        <div class="options" id="options"></div>
+
+        <div class="feedback" id="feedback"></div>
+
+        <button class="next-btn" id="next" onclick="nextQuestion()">
+            Next Question 💗
+        </button>
+
+    </div>
+
+    <div class="final-screen" id="final">
+
+        <div class="moon">🥹💗</div>
+
+        <h2>You made it, Luna!</h2>
+
+        <p>
+            Hehe, thank you for answering all my questions.
+            I hope this little surprise brought a smile
+            to your face.
+        </p>
+
+        <div class="gift">🎁</div>
+
+        <p>
+            But wait... there's something waiting for you.
+            I saved the best part for last. ✨
+        </p>
+
+        <a class="final-link"
+           id="birthday-link"
+           href="https://raiiva1208-eng.github.io/index.html/"
+           target="_blank"
+           rel="noopener noreferrer">
+            Open Your Birthday Wishes 🎂💗
+        </a>
+
+        <div class="footer">
+            Made with love, just for you 🌷
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+const questions = [
+
+    {
+        question: "Will you forgive me if I'm late to wish you a happy birthday? 🥺",
+        answers: ["YES 💗", "NO 😤"],
+        feedback: [
+            "Awww, I knew you would! 🥹💗",
+            "Ouchhh! I guess I deserve that. 😭"
+        ]
+    },
+
+    {
+        question: "Can I have a virtual birthday hug? 🫂",
+        answers: ["YESSS 🫂", "OF COURSE 💗"],
+        feedback: [
+            "Sending you the biggest virtual huggg! 🫂",
+            "Hehe, here's an extra warm hug! 💗"
+        ]
+    },
+
+    {
+        question: "Will you remember this little surprise? 🥹",
+        answers: ["ALWAYS 💗", "HOW COULD I NOT?"],
+        feedback: [
+            "That means a lot! 🥹",
+            "Hehe, mission accomplished then! ✨"
+        ]
+    },
+
+    {
+        question: "Do you think we'll ever get to meet someday in the future? 🌷",
+        answers: ["I HOPE SO 🥺", "DEFINITELY 💗"],
+        feedback: [
+            "I hope that day comes too. 🌷",
+            "Then it's a promise to look forward to! 🥹"
+        ]
+    },
+
+    {
+        question: "The undeniable question... 🥁<br><br>Do you love your HB? 🥺💗<br><small>(Not romantically, obviously!)</small>",
+        answers: ["YES, OBVIOUSLY 💗", "MORE THAN ANYTHING 🥹"],
+        feedback: [
+            "HAHA, I KNEW IT! 😭💗",
+            "Okayyy, now you're making me emotional! 🥹"
+        ]
+    }
+
+];
+
+let current = 0;
+let answered = false;
+
+const questionEl = document.getElementById("question");
+const optionsEl = document.getElementById("options");
+const feedbackEl = document.getElementById("feedback");
+const nextBtn = document.getElementById("next");
+const numberEl = document.getElementById("number");
+const progressEl = document.getElementById("progress");
+
+function loadQuestion() {
+
+    answered = false;
+
+    const q = questions[current];
+
+    numberEl.textContent =
+        `QUESTION 0${current + 1} / 05`;
+
+    questionEl.innerHTML = q.question;
+
+    optionsEl.innerHTML = "";
+
+    feedbackEl.textContent = "";
+
+    nextBtn.style.display = "none";
+
+    progressEl.style.width =
+        `${(current / questions.length) * 100}%`;
+
+    q.answers.forEach((answer, index) => {
+
+        const button = document.createElement("button");
+
+        button.className = "option";
+        button.textContent = answer;
+
+        button.addEventListener("click", () => {
+            selectAnswer(index, button);
+        });
+
+        optionsEl.appendChild(button);
+
+    });
+
+}
+
+function selectAnswer(index, selectedButton) {
+
+    if (answered) return;
+
+    answered = true;
+
+    const buttons = optionsEl.querySelectorAll(".option");
+
+    buttons.forEach(button => {
+        button.disabled = true;
+    });
+
+    selectedButton.classList.add("selected");
+
+    feedbackEl.textContent =
+        questions[current].feedback[index];
+
+    nextBtn.style.display = "block";
+
+    nextBtn.textContent =
+        current === questions.length - 1
+        ? "One Last Surprise ✨"
+        : "Next Question 💗";
+
+}
+
+function nextQuestion() {
+
+    current++;
+
+    if (current < questions.length) {
+
+        loadQuestion();
+
+    } else {
+
+        document.getElementById("quiz").style.display = "none";
+
+        document.getElementById("final").style.display = "block";
+
+        progressEl.style.width = "100%";
+
+        document.getElementById("birthday-link").style.display = "block";
+
+    }
+
+}
+
+// Floating hearts
+
+function createHeart() {
+
+    const heart = document.createElement("div");
+
+    heart.className = "heart";
+
+    const symbols = ["💗", "💕", "♡", "✨", "🌸"];
+
+    heart.textContent =
+        symbols[Math.floor(Math.random() * symbols.length)];
+
+    heart.style.left = Math.random() * 100 + "vw";
+
+    heart.style.fontSize =
+        (12 + Math.random() * 18) + "px";
+
+    const duration = 5 + Math.random() * 5;
+
+    heart.style.animationDuration = duration + "s";
+
+    document.body.appendChild(heart);
+
+    setTimeout(() => heart.remove(), duration * 1000);
+
+}
+
+setInterval(createHeart, 650);
+
+loadQuestion();
+
+</script>
+
+</body>
+</html>
